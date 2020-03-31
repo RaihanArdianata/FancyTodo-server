@@ -19,15 +19,41 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      description: DataTypes.STRING,
-      status: DataTypes.BOOLEAN,
+      description:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: `the description cant null`
+          },
+          notEmpty: {
+            msg: `the description cant empty`
+          }
+        }
+      },
+      status: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        validate: {
+          notNull: {
+            msg: `the status cant null`
+          },
+          notEmpty: {
+            msg: `the status cant empty`
+          }
+        }
+      },
       due_date: {
         type: DataTypes.DATE,
+        allowNull: false,
         validate: {
           checkDueDate() {
             if (this.due_date < new Date()) {
               throw new Error('Error Date cant less than current date')
             }
+          },
+          notNull: {
+            msg: `the due date cant null`
           }
         }
       }

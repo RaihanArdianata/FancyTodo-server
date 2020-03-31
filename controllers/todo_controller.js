@@ -37,7 +37,6 @@ class Controller {
     static create(req, res) {
         let { title, description, status, due_date } = req.body
 
-        console.log(title)
         Todo.create({
             title,
             description,
@@ -45,9 +44,14 @@ class Controller {
             due_date
         })
             .then((result) => {
+                // console.log(result);
+                
                 res.status(201).json(result)
             })
             .catch((err) => {
+                if(err.name == 'SequelizeValidationError'){
+                    res.status(400).json(err)
+                }
                 res.status(500).json(err)
             })
     }
@@ -69,7 +73,6 @@ class Controller {
             }
         })
             .then((result) => {
-                console.log(result)
                 if (result[0] > 0) {
                     res.status(200).json(data)
                 } else {
@@ -77,7 +80,10 @@ class Controller {
                 }
             })
             .catch((err) => {
-                res.status((400)).json(err)
+                if(err.name == 'SequelizeValidationError'){
+                    res.status(400).json(err)
+                }
+                res.status((500)).json(err)
             })
     }
 
