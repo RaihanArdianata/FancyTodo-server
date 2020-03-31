@@ -56,7 +56,8 @@ module.exports = (sequelize, DataTypes) => {
             msg: `the due date cant null`
           }
         }
-      }
+      },
+      UserId: DataTypes.INTEGER
     }, {
     sequelize
   }

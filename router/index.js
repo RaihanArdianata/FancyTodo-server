@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const todo = require('./todo.js')
+const user_controller =  require('../controllers/user_controller.js')
 
-router.get('/', (req, res) => {
-    res.status(200).json({ message: 'welcome' })
-})
+router.post('/signup', user_controller.signup)
+router.post('/signin', user_controller.signin)
 
 router.use('/todo', todo)
 
