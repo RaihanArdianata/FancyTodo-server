@@ -10,7 +10,18 @@ module.exports = (sequelize, DataTypes) => {
   User.init({
     email: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
+        notNull: {
+          msg: `the Email cant null`
+        },
+        notEmpty: {
+          msg: `the Email cant empty`
+        },
+        isEmail: {
+          args: true,
+          msg: 'invalid email format'
+        },
         isUniqe (email, done){
           User.findOne({
             where: {
