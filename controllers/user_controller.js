@@ -4,7 +4,7 @@ const {decode} = require('../helper/bycript.js')
 
 class Controller{
 
-    static signup(req, res){
+    static signup(req, res, next){
         let data = {
             email : req.body.email,
             password : req.body.password
@@ -23,6 +23,7 @@ class Controller{
             })
         })
         .catch((err)=>{
+            return next(err)
             res.status((500)).json(err)
         })
 

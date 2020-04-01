@@ -2,7 +2,7 @@ const { Todo } = require('../models')
 
 class Controller {
 
-    static findAll(req, res) {
+    static findAll(req, res, next) {
         let UserId = req.CurrentUserId
         Todo.findAll({
             order: [
