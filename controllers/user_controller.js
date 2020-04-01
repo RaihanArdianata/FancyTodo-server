@@ -56,18 +56,19 @@ class Controller{
                 }
                 else{
                     res.status(400).json({
-                        'type': 'Bad request',
+                        'type': 'BadRequest',
                         'msg': 'invlid email/password'
                     })
                 }
             }else{
                 res.status(400).json({
-                    'type': 'Bad request',
+                    'type': 'BadRequest',
                     'msg': 'invlid email/password'
                 })
             }
         })
         .catch((err)=>{
+            return next(err)
             res.status((500)).json(err)
         })
     }
