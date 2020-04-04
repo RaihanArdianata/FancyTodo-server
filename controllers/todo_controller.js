@@ -1,10 +1,11 @@
-const { Todo } = require('../models')
+const {User, Todo } = require('../models')
 
 class Controller {
 
     static findAll(req, res, next) {
         let UserId = req.CurrentUserId
         Todo.findAll({
+            include:[ User ],
             order: [
                 [
                     'id', 'ASC'
@@ -14,53 +15,50 @@ class Controller {
             }
         })
             .then((result) => {
-                res.status(201).json(result)
+                return res.status(201).json(result)
 
             })
             .catch((err) => {
-                res.status(500).json(err)
+                return next(err)
             })
     }
 
-    static findByPk(req, res) {
+    static findByPk(req, res, next) {
         const id = req.params.id
         Todo.findByPk(id)
             .then((result) => {
                 if (result) {
-                    res.status(200).json(result)
+                    return res.status(200).json(result)
                 } else {
-                    res.status(404).json({ message: 'Data Not Found', data: result })
+                    return next({ message: 'Data Not Found', data: result })
                 }
             })
             .catch((err) => {
-                res.status(500).json(err)
+                return next(err)
             })
     }
 
-    static create(req, res) {
+    static create(req, res, next) {
         let { title, description, status, due_date } = req.body
         let UserId = req.CurrentUserId
         Todo.create({
             title,
             description,
-            status,
             due_date,
-            UserId
+            UserId,
+            status
         })
             .then((result) => {
                 // console.log(result);
-                res.status(201).json(result)
+                return res.status(201).json(result)
             })
             .catch((err) => {
-                if (err.name == 'SequelizeValidationError') {
-                    res.status(400).json(err)
-                }
-                res.status(500).json(err)
+                return next(err)
             })
     }
 
-    static update(req, res) {
-        const id = req.params.id
+    static update(req, res, next) {
+        const id = +req.params.id
         let { title, description, status, due_date } = req.body
         let UserId = req.CurrentUserId
         const data = {
@@ -78,20 +76,17 @@ class Controller {
         })
             .then((result) => {
                 if (result[0] > 0) {
-                    res.status(200).json(data)
+                    return res.status(200).json(data)
                 } else {
-                    res.status(404).json({ message: 'Data Not Found', data: result })
+                    return next({ message: 'Data Not Found', data: result })
                 }
             })
             .catch((err) => {
-                if (err.name == 'SequelizeValidationError') {
-                    res.status(400).json(err)
-                }
-                res.status((500)).json(err)
+                return next(err)
             })
     }
 
-    static delete(req, res) {
+    static delete(req, res, next) {
         const id = req.params.id
         let data
         Todo.findByPk(id)
@@ -105,14 +100,14 @@ class Controller {
                         }
                     })
                 }else{
-                    res.status(404).json({ message: 'Data Not Found', data: result })
+                    return next({ message: 'Data Not Found', data: result })
                 }
             })
             .then((result) => {
-                res.status(200).json(data)
+                return res.status(200).json(data)
             })
             .catch((err) => {
-                res.status((400)).json(err)
+                return next(err)
             })
     }
 }

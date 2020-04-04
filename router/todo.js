@@ -6,7 +6,7 @@ const autorization = require('../middleware/autorization.js')
 router.use(autentication)
 router.get('/', controller.findAll)
 router.post('/', controller.create)
-router.get('/:id', autorization, controller.findByPk)
+router.get('/:id', autorization, controller.findByPk)//note 
 router.put('/:id', autorization, controller.update)
 router.delete('/:id', autorization, controller.delete)
 

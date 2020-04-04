@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
             }
           })
           .done(function(result){
+            console.log(result)
             if(result){
               done(new Error('Email already in use')) 
             }
@@ -48,6 +49,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function (models) {
     // associations can be defined here
+    User.hasMany(models.Todo)
   };
   return User;
 };
